@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+        <ProjectGuid>{F2DF7444-6908-4564-A74D-DAD85B9B3231}</ProjectGuid>
+        <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+        <TemplateGuid>{edc1b0fa-90cd-4038-8fad-98fe74adb368}</TemplateGuid>
+        <OutputType>Exe</OutputType>
+        <RootNamespace>HelloiOS13</RootNamespace>
+        <AssemblyName>HelloiOS13</AssemblyName>
+        <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+        <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
+        <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
+        <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
+        <DefineConstants>DEBUG</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <MtouchArch>x86_64</MtouchArch>
+        <MtouchLink>None</MtouchLink>
+        <MtouchDebug>true</MtouchDebug>
+        <MtouchExtraArgs>--enable-repl</MtouchExtraArgs>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+        <DebugType>none</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <MtouchLink>None</MtouchLink>
+        <MtouchArch>x86_64</MtouchArch>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\iPhone\Debug</OutputPath>
+        <DefineConstants>DEBUG</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <MtouchArch>ARM64</MtouchArch>
+        <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+        <CodesignKey>iPhone Developer</CodesignKey>
+        <MtouchDebug>true</MtouchDebug>
+        <MtouchExtraArgs>--enable-repl --interpreter</MtouchExtraArgs>
+        <MtouchLink>None</MtouchLink>
+        <OptimizePNGs>false</OptimizePNGs>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+        <DebugType>none</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\iPhone\Release</OutputPath>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+        <MtouchArch>ARM64</MtouchArch>
+        <CodesignKey>iPhone Developer</CodesignKey>
+        <MtouchLink>None</MtouchLink>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="System" />
+        <Reference Include="System.Xml" />
+        <Reference Include="System.Core" />
+        <Reference Include="Xamarin.iOS" />
+        <Reference Include="System.Numerics" />
+        <Reference Include="System.Numerics.Vectors" />
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="Xamarin.Essentials" Version="1.3.0" />
+      <PackageReference Include="Xamarin.Forms">
+        <Version>4.2.0.709249</Version>
+      </PackageReference>
+      <PackageReference Include="Xamarin.Forms.Visual.Material">
+        <Version>4.2.0.709249</Version>
+      </PackageReference>
+      <PackageReference Include="XamPane">
+        <Version>1.0.0</Version>
+      </PackageReference>
+      <PackageReference Include="Newtonsoft.Json">
+        <Version>12.0.3-beta1</Version>
+      </PackageReference>
+    </ItemGroup>
+    <ItemGroup>
+        <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Contents.json" />
+        <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon%402x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-60.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-72.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-72%402x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-App-20x20%401x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-App-20x20%402x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-App-20x20%403x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-App-29x29%401x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-App-29x29%402x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-App-29x29%403x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-App-40x40%401x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-App-40x40%402x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-App-40x40%403x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-App-60x60%401x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-App-60x60%402x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-App-60x60%403x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-App-76x76%401x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-App-76x76%402x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-App-76x76%403x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon-App-83.5x83.5%402x.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\ItunesArtwork%402x.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Resources\" />
+        <Folder Include="Resources\home\" />
+        <Folder Include="Models\" />
+        <Folder Include="Helpers\" />
+        <Folder Include="Assets.xcassets\MenuBackground.imageset\" />
+        <Folder Include="Demos\" />
+        <Folder Include="Demos\D1-DarkMode\" />
+        <Folder Include="Demos\D2-PencilKit\" />
+        <Folder Include="Abstractions\" />
+        <Folder Include="Demos\D3-ARKit\" />
+        <Folder Include="Resources\eb_bg\" />
+        <Folder Include="Demos\D4-CoreML\" />
+        <Folder Include="Resources\coreml\" />
+        <Folder Include="Assets.xcassets\AppIcons.appiconset\" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Info.plist" />
+        <None Include="Entitlements.plist" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="Main.cs" />
+        <Compile Include="AppDelegate.cs" />
+        <Compile Include="Models\DisplayInMenuAttribute.cs" />
+        <Compile Include="Models\MenuItem.cs" />
+        <Compile Include="Helpers\CSharpForMarkup.cs" />
+        <Compile Include="Helpers\Extensions.cs" />
+        <Compile Include="Helpers\InlineTableViewSourceWithoutRowHeight.cs" />
+        <Compile Include="Helpers\WH.cs" />
+        <Compile Include="Demos\D1-DarkMode\AllDynamicColoursViewController.cs" />
+        <Compile Include="Demos\D1-DarkMode\BasicTextColoursViewController.cs" />
+        <Compile Include="Demos\D1-DarkMode\CustomDynamicColoursViewController.cs" />
+        <Compile Include="Demos\D1-DarkMode\CustomBehaviourViewController.cs" />
+        <Compile Include="Abstractions\BaseARViewController.cs" />
+        <Compile Include="Helpers\EBDialogViewController.cs" />
+        <Compile Include="Helpers\InlineARSCNViewDelegate.cs" />
+        <Compile Include="Helpers\MainThreadARSessionDelegate.cs" />
+        <Compile Include="Helpers\InlineARSessionDelegate.cs" />
+        <Compile Include="Demos\D2-PencilKit\UsingPencilKitImageViewController.cs" />
+        <Compile Include="Demos\D2-PencilKit\BasicPencilKitViewController.cs" />
+        <Compile Include="Demos\D3-ARKit\ARCoachingViewController.cs" />
+        <Compile Include="Helpers\PlaneTrackingViewController.cs" />
+        <Compile Include="Helpers\Matrix4Extensions.cs" />
+        <Compile Include="Demos\D2-PencilKit\PencilARKitViewController.cs" />
+        <Compile Include="Demos\D3-ARKit\ARPersonSegmentationViewController.cs" />
+        <Compile Include="Helpers\ShaderScene.cs" />
+        <Compile Include="Demos\D3-ARKit\ARMultiFaceTrackingViewController.cs" />
+        <Compile Include="MenuViewController.cs" />
+        <Compile Include="Resources\FreeSoundsModel25.cs">
+          <DependentUpon>FreeSoundsModel25.mlmodel</DependentUpon>
+        </Compile>
+        <Compile Include="Demos\D4-CoreML\AudioClassifierViewController.cs" />
+        <Compile Include="Demos\D4-CoreML\AudioClassifierPlusViewController.cs" />
+        <Compile Include="Resources\FreeSoundsPlusModel25.cs">
+          <DependentUpon>FreeSoundsPlusModel25.mlmodel</DependentUpon>
+        </Compile>
+        <Compile Include="Abstractions\BaseContentPage.cs" />
+        <Compile Include="Abstractions\BaseListViewController.cs" />
+        <Compile Include="Abstractions\BaseViewController.cs" />
+        <Compile Include="Helpers\PKEventingCanvasView.cs" />
+        <Compile Include="Helpers\BetterPlaneTrackingViewController.cs" />
+    </ItemGroup>
+    <ItemGroup>
+      <BundleResource Include="Resources\container.png" />
+      <BundleResource Include="Resources\tile-small.png" />
+      <BundleResource Include="Resources\tile.png" />
+      <BundleResource Include="Resources\light.png" />
+      <BundleResource Include="Resources\moon.jpeg" />
+      <BundleResource Include="Resources\owook.png" />
+      <BundleResource Include="Resources\owoweird.png" />
+      <BundleResource Include="Resources\sun.png" />
+      <BundleResource Include="Resources\container2.png" />
+      <BundleResource Include="Resources\eb_bg\29.png" />
+      <BundleResource Include="Resources\eb_bg\35.png" />
+      <BundleResource Include="Resources\eb_bg\40.png" />
+      <BundleResource Include="Resources\eb_bg\45.png" />
+      <BundleResource Include="Resources\eb_bg\74.png" />
+      <BundleResource Include="Resources\eb_bg\100.png" />
+      <BundleResource Include="Resources\eb_bg\102.png" />
+      <BundleResource Include="Resources\eb_bg\114.png" />
+      <BundleResource Include="Resources\eb_bg\115.png" />
+      <BundleResource Include="Resources\eb_bg\122.png" />
+      <BundleResource Include="Resources\eb_bg\148.png" />
+      <BundleResource Include="Resources\eb_bg\153.png" />
+      <BundleResource Include="Resources\eb_bg\163.png" />
+      <BundleResource Include="Resources\eb_bg\175.png" />
+      <BundleResource Include="Resources\eb_bg\198.png" />
+      <BundleResource Include="Resources\eb_bg\208.png" />
+      <BundleResource Include="Resources\eb_bg\220.png" />
+      <BundleResource Include="Resources\eb_bg\243.png" />
+      <BundleResource Include="Resources\eb_bg\258.png" />
+      <BundleResource Include="Resources\eb_bg\280.png" />
+      <BundleResource Include="Resources\eb_bg\283.png" />
+      <BundleResource Include="Resources\eb_bg\296.png" />
+      <BundleResource Include="Resources\eb_bg\305.png" />
+      <BundleResource Include="Resources\eb_bg\309.png" />
+      <BundleResource Include="Resources\FreeSoundsModel25.mlmodelc\coremldata.bin" />
+      <BundleResource Include="Resources\FreeSoundsModel25.mlmodelc\model0\coremldata.bin" />
+      <BundleResource Include="Resources\FreeSoundsModel25.mlmodelc\model1\model.espresso.shape" />
+      <BundleResource Include="Resources\FreeSoundsModel25.mlmodelc\model1\model.espresso.net" />
+      <BundleResource Include="Resources\FreeSoundsModel25.mlmodelc\model1\model.espresso.weights" />
+      <BundleResource Include="Resources\FreeSoundsModel25.mlmodelc\model1\coremldata.bin" />
+      <BundleResource Include="Resources\FreeSoundsModel25.mlmodelc\model1\model\coremldata.bin" />
+      <BundleResource Include="Resources\FreeSoundsModel25.mlmodelc\model1\neural_network_optionals\coremldata.bin" />
+      <BundleResource Include="Resources\FreeSoundsModel25.mlmodelc\model2\coremldata.bin" />
+      <BundleResource Include="Resources\FreeSoundsPlusModel25.mlmodelc\FreeSoundsPlusModel25.mlmodelc\coremldata.bin" />
+      <BundleResource Include="Resources\FreeSoundsPlusModel25.mlmodelc\FreeSoundsPlusModel25.mlmodelc\model0\coremldata.bin" />
+      <BundleResource Include="Resources\FreeSoundsPlusModel25.mlmodelc\FreeSoundsPlusModel25.mlmodelc\model1\model.espresso.shape" />
+      <BundleResource Include="Resources\FreeSoundsPlusModel25.mlmodelc\FreeSoundsPlusModel25.mlmodelc\model1\model.espresso.net" />
+      <BundleResource Include="Resources\FreeSoundsPlusModel25.mlmodelc\FreeSoundsPlusModel25.mlmodelc\model1\model.espresso.weights" />
+      <BundleResource Include="Resources\FreeSoundsPlusModel25.mlmodelc\FreeSoundsPlusModel25.mlmodelc\model1\coremldata.bin" />
+      <BundleResource Include="Resources\FreeSoundsPlusModel25.mlmodelc\FreeSoundsPlusModel25.mlmodelc\model1\model\coremldata.bin" />
+      <BundleResource Include="Resources\FreeSoundsPlusModel25.mlmodelc\FreeSoundsPlusModel25.mlmodelc\model1\neural_network_optionals\coremldata.bin" />
+      <BundleResource Include="Resources\FreeSoundsPlusModel25.mlmodelc\FreeSoundsPlusModel25.mlmodelc\model2\coremldata.bin" />
+      <BundleResource Include="Resources\xamagon.png" />
+      <BundleResource Include="Resources\sprite238.gif" />
+      <BundleResource Include="Resources\xamagon-fill.png" />
+    </ItemGroup>
+    <ItemGroup>
+      <CoreMLModel Include="Resources\FreeSoundsModel25.mlmodel" />
+      <CoreMLModel Include="Resources\FreeSoundsPlusModel25.mlmodel" />
+    </ItemGroup>
+    <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+</Project>
