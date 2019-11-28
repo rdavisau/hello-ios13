@@ -47,7 +47,51 @@
 	<string>Audio in -&gt; SoundAnalysis out</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>We don&apos;t actually speech recognise but we need the key</string>
+	<key>NFCReaderUsageDescription</key>
+	<string>h4ck t3h amib0z</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcons.appiconset</string>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<true/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneConfigurationName</key>
+					<string>Default Configuration</string>
+					<key>UISceneDelegateClassName</key>
+					<string>SceneDelegate</string>
+				</dict>
+				<dict>
+					<key>UISceneConfigurationName</key>
+					<string>REPL Configuration</string>
+					<key>UISceneDelegateClassName</key>
+					<string>ReplSceneDelegate</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>IOS13DemoScene</string>
+	</array>
+	<key>UIApplicationShortcutItems</key>
+	<array>
+		<dict>
+			<key>UIApplicationShortcutItemType</key>
+			<string>com.helloios13.repl</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>REPL</string>
+			<key>UIApplicationShortcutItemSubtitle</key>
+			<string>Yes, a REPL!</string>
+		</dict>
+	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>apple_kid.ttf</string>
+	</array>
 </dict>
 </plist>

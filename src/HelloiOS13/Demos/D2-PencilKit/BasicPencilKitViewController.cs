@@ -1,4 +1,5 @@
-﻿using ARKitMeetup.Helpers;
+﻿using System.Linq;
+using ARKitMeetup.Helpers;
 using ARKitMeetup.Models;
 using PencilKit;
 using UIKit;
@@ -6,19 +7,16 @@ using UIKit;
 namespace HelloiOS13.D2.D1
 {
     [DisplayInMenu(DisplayName = "Basic PencilKit", DisplayDescription = "Draw a thing real easy")]
-    public class BasicPencilKitViewController : UIViewController
+    public class BasicPencilKitViewController : BaseViewController
     {
-        public override void ViewDidLoad()
-        {
-            base.ViewDidLoad();
-        }
-
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-
+            
             var canvas = new PKCanvasView();
-            var tool = PKToolPicker.GetSharedToolPicker(UIApplication.SharedApplication.KeyWindow);
+            var window = GetWindow();
+
+            var tool = PKToolPicker.GetSharedToolPicker(window);
 
             tool.SetVisible(true, canvas);
             tool.AddObserver(canvas);
@@ -26,5 +24,5 @@ namespace HelloiOS13.D2.D1
 
             View.FillWith(canvas);
         }
-    }
+    } 
 }

@@ -13,7 +13,7 @@ using UIKit;
 namespace HelloiOS13.D2.D2
 {
     [DisplayInMenu(DisplayName = "Using PencilKit Outputs", DisplayDescription = "Draw a thing real easy and do something with it")]
-    public class UsingPencilKitImageViewController : UIViewController
+    public class UsingPencilKitImageViewController : BaseViewController
     {
         public UIView BackgroundView { get; private set; }
         public TranslationKind Translation { get; set; }
@@ -38,7 +38,8 @@ namespace HelloiOS13.D2.D2
                 NSLayoutConstraint.Create(Canvas, NSLayoutAttribute.Height, NSLayoutRelation.Equal, 1, 200),
             });
 
-            var tool = PKToolPicker.GetSharedToolPicker(UIApplication.SharedApplication.KeyWindow);
+            var window = GetWindow();
+            var tool = PKToolPicker.GetSharedToolPicker(window);
             tool.SetVisible(true, Canvas);
             tool.AddObserver(Canvas);
 

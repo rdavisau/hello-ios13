@@ -39,15 +39,18 @@ namespace HelloiOS13.D1.D4
 
         public void UpdateUIForThemeChange()
         {
-            ImageView.Image = ImageForCurrentMode;
-            MyFeelingsView.Image = MyFeelingsForCurrentMode;
-            Label.Text = TextForCurrentMode;
-            TableView.ReloadData();
+            UIView.Transition(View, .25, UIViewAnimationOptions.TransitionCrossDissolve, () =>
+            {
+                ImageView.Image = ImageForCurrentMode;
+                MyFeelingsView.Image = MyFeelingsForCurrentMode;
+                Label.Text = TextForCurrentMode;
+                TableView.ReloadData();
+            }, null);
         }
 
         public UIImage ImageForCurrentMode
             => IsDarkMode
-            ? UIImage.FromFile("moon.jpeg")
+            ? UIImage.FromFile("moon.png")
             : UIImage.FromFile("sun.png");
 
         public UIImage MyFeelingsForCurrentMode

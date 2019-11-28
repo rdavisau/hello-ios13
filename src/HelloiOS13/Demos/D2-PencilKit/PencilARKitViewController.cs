@@ -31,7 +31,8 @@ namespace HelloiOS13.D2.D3
 
             View.AddSubview(Canvas);
 
-            var tool = PKToolPicker.GetSharedToolPicker(UIApplication.SharedApplication.KeyWindow);
+            var window = GetWindow();
+            var tool = PKToolPicker.GetSharedToolPicker(window);
 
             tool.SetVisible(true, Canvas);
             tool.AddObserver(Canvas);

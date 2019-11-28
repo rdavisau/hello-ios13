@@ -9,6 +9,7 @@ using UIKit;
 using System.Threading.Tasks;
 using System;
 using CoreFoundation;
+using ModelIO;
 
 namespace HelloiOS13.D3.D3
 {
@@ -21,6 +22,7 @@ namespace HelloiOS13.D3.D3
         {
             var config = base.GetARConfiguration() as ARWorldTrackingConfiguration;
             config.UserFaceTrackingEnabled = true;
+
 
             return config;
         }

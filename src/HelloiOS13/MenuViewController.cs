@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using ARKitMeetup.Models;
 using CoreFoundation;
 using CoreGraphics;
 using Foundation;
+using MobileCoreServices;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
@@ -15,7 +17,7 @@ using MenuItem = ARKitMeetup.Models.MenuItem;
 
 namespace HelloiOS13
 {
-    public class MenuViewController : BaseViewController
+    public class MenuViewController : BaseViewController, IUIDragInteractionDelegate, IUIAdaptivePresentationControllerDelegate
     {
         const int MenuViewCapInset = 20;
         const int MenuViewPadding = 10;
@@ -24,6 +26,7 @@ namespace HelloiOS13
         public UIView HeaderView { get; set; }
         public UIView HeaderLabel { get; set; }
         public UILabel StartLabel { get; private set; }
+        public UISegmentedControl PresentationKindSegmentedControl { get; private set; }
         public UIView MenuView { get; set; }
         public UIView MenuContainerImageView { get; set; }
         public UITableView MenuTableView { get; private set; }
@@ -37,6 +40,13 @@ namespace HelloiOS13
             SetupViews();
             DetectScenes();
             SetupTableView();
+
+            View.UserInteractionEnabled = true;
+            HeaderView.UserInteractionEnabled = true;
+            HeaderLabel.UserInteractionEnabled = true;
+
+            HeaderView.AddInteraction(
+                new UIDragInteraction(this) { Enabled = true, });  
         }
 
         private void DetectScenes()
@@ -68,7 +78,7 @@ namespace HelloiOS13
         {
             var selectedIndexPath = NSIndexPath.FromItemSection(0, 0);
             MenuTableView.Source = new InlineTableViewSourceWithoutRowHeight
-            {
+            { 
                 _RowsInSection = (tv, section) => Scenes.Count,
                 _GetCell = (tv, indexPath) =>
                 {
@@ -100,8 +110,57 @@ namespace HelloiOS13
                 },
                 _RowSelected = (tv, indexPath) =>
                 {
-                    TransitionToScene(indexPath.Row);
+                    var behaviour = (PresentationBehaviour)(int)PresentationKindSegmentedControl.SelectedSegment;
+
+                    switch (behaviour)
+                    {
+                        case PresentationBehaviour.Present:
+
+                            TransitionToScene(indexPath.Row);
+                            break;
+
+                        case PresentationBehaviour.New:
+                        case PresentationBehaviour.Reuse:
+
+                            var scene = Scenes[indexPath.Row];
+                            var userInfo = new[] { "openScene", scene.Type.AssemblyQualifiedName }
+                                .ToNSDictionary();
+
+                            var userActivity =
+                                new NSUserActivity(scene.Type.AssemblyQualifiedName)
+                                {
+                                    UserInfo = userInfo
+                                };
+
+                            UIApplication.SharedApplication.RequestSceneSessionActivation(
+                                sceneSession: behaviour == PresentationBehaviour.Reuse
+                                                ? SceneDelegate.DetailSceneSession
+                                                : null,
+                                userActivity: userActivity,
+                                options: null,
+                                errorHandler: null
+                            );
+
+                            break;
+                    }
+                }
+            };
+
+            MenuTableView.DragDelegate = new InlineUITableViewDragDelegate
+            {
+                _GetItemsForBeginningDragSession = (tv, session, indexPath) =>
+                {
+                    var scene = Scenes[indexPath.Row];
+                    var userActivity = new NSUserActivity("IOS13DemoScene") { Title = scene.Type.AssemblyQualifiedName };
+                    var itemProvider = new NSItemProvider(userActivity);
+                    
+                    itemProvider.RegisterObject(userActivity,
+                        NSItemProviderRepresentationVisibility.All);
+                    
+                    return new[] { new UIDragItem(itemProvider) { LocalObject = userActivity } }; 
                 },
+
+                _DragSessionIsRestrictedToDraggingApplication = (tv, session) => false
             };
         }
 
@@ -113,7 +172,12 @@ namespace HelloiOS13
             if (ui is ContentPage cp)
                 ui = cp.CreateViewController();
 
-            PresentViewController(ui as UIViewController, true, null);
+            var vc = ui as UIViewController;
+            vc.PresentationController.Delegate = this;
+
+            PresentViewController(vc, true, null);
+
+            ReplSceneDelegate.Instance?.ReplPage?.SetContext(ui);
         }
 
         bool firstAppearance = true;
@@ -121,8 +185,13 @@ namespace HelloiOS13
         {
             base.ViewWillAppear(animated);
 
-            BackgroundView.Transform = CGAffineTransform.MakeIdentity();
-            AnimateBackground();
+            ReplSceneDelegate.Instance?.SetActiveScreen(this);
+
+            if (!animating)
+            {
+                BackgroundView.Transform = CGAffineTransform.MakeIdentity();
+                AnimateBackground();
+            }
 
             StartLabel.Alpha = 1;
             UIView.Animate(1, 0, UIViewAnimationOptions.Autoreverse | UIViewAnimationOptions.Repeat | UIViewAnimationOptions.CurveEaseIn,
@@ -151,7 +220,7 @@ namespace HelloiOS13
             
             StartLabel = new UILabel
             {
-                Text = "COMING SOON",
+                Text = "OUT NOW",
                 TextColor = UIColor.White,
                 TextAlignment = UITextAlignment.Center,
                 Font = UIFont.SystemFontOfSize(24),
@@ -161,6 +230,14 @@ namespace HelloiOS13
             StartLabel.Layer.ShadowOffset = CGSize.Empty;
             StartLabel.Layer.ShadowColor = UIColor.Black.CGColor;
             StartLabel.Layer.ShadowOpacity = .75f;
+
+            PresentationKindSegmentedControl = new UISegmentedControl("present", "new", "reuse") 
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                TintColor = UIColor.White,
+                Transform = CGAffineTransform.MakeScale(.85f, .85f),
+                SelectedSegment = 0,
+            };
 
             MenuView = new UIView { TranslatesAutoresizingMaskIntoConstraints = false };
             MenuContainerImageView = new UIView
@@ -178,7 +255,7 @@ namespace HelloiOS13
                 TableFooterView = new UIView { }
             };
 
-            HeaderView.AddSubviews(HeaderLabel, StartLabel);
+            HeaderView.AddSubviews(HeaderLabel, StartLabel, PresentationKindSegmentedControl); 
             MenuView.AddSubviews(MenuContainerImageView);
             MenuView.InsertSubviewAbove(MenuTableView, MenuContainerImageView);
             View.AddSubviews(BackgroundView, HeaderView, MenuView);
@@ -200,6 +277,10 @@ namespace HelloiOS13
                 NSLayoutConstraint.Create(StartLabel, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, HeaderView, NSLayoutAttribute.Leading, 1, -10),
                 NSLayoutConstraint.Create(StartLabel, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, HeaderView, NSLayoutAttribute.Trailing, 1, 10),
 
+
+                NSLayoutConstraint.Create(PresentationKindSegmentedControl, NSLayoutAttribute.Top, NSLayoutRelation.Equal, StartLabel, NSLayoutAttribute.Bottom, 1, 0),
+                NSLayoutConstraint.Create(PresentationKindSegmentedControl, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, StartLabel, NSLayoutAttribute.CenterX, 1, 0),
+
                 NSLayoutConstraint.Create(HeaderView, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, View, NSLayoutAttribute.Leading, 1, 0),
                 NSLayoutConstraint.Create(HeaderView, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, View, NSLayoutAttribute.Trailing, 1, 0),
                 NSLayoutConstraint.Create(HeaderView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View, NSLayoutAttribute.Top, 1, 0),
@@ -208,7 +289,7 @@ namespace HelloiOS13
                 NSLayoutConstraint.Create(MenuView, NSLayoutAttribute.Leading, NSLayoutRelation.GreaterThanOrEqual, View, NSLayoutAttribute.Leading, 1, 0),
                 NSLayoutConstraint.Create(MenuView, NSLayoutAttribute.Trailing, NSLayoutRelation.GreaterThanOrEqual, View, NSLayoutAttribute.Trailing, 1, 0),
                 NSLayoutConstraint.Create(MenuView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, View, NSLayoutAttribute.Bottom, 1, -15),
-                NSLayoutConstraint.Create(MenuView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, HeaderView, NSLayoutAttribute.Bottom, 1, 0),
+                NSLayoutConstraint.Create(MenuView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, PresentationKindSegmentedControl, NSLayoutAttribute.Bottom, 1, 0),
                 NSLayoutConstraint.Create(MenuView, NSLayoutAttribute.Width, NSLayoutRelation.LessThanOrEqual, 1, 600),
                 NSLayoutConstraint.Create(MenuView, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, View, NSLayoutAttribute.CenterX, 1, 0),
 
@@ -224,8 +305,10 @@ namespace HelloiOS13
             });
         }
 
+        bool animating = false;
         protected virtual void AnimateBackground()
         {
+            animating = true;
             // this is so bad but it works for long enough to make it through a meetup presentation
             // i'll be our little secret ok? 
             Task.Run(async () =>
@@ -239,6 +322,33 @@ namespace HelloiOS13
                 }
             });
         }
+
+        public UIDragItem[] GetItemsForBeginningSession(UIDragInteraction interaction, IUIDragSession session)
+        {
+            Console.WriteLine(interaction);
+            Console.WriteLine(session);
+
+            var scene = Scenes[1];
+            var activity = new NSUserActivity("IOS13DemoScene") { Title = scene.Type.AssemblyQualifiedName };
+            var itemProvider = new NSItemProvider(activity);
+
+            itemProvider.RegisterObject(activity, NSItemProviderRepresentationVisibility.All);
+
+            return new[] { new UIDragItem(itemProvider) { LocalObject = activity } };
+        }
+
+        [Export("presentationControllerDidDismiss:")]
+        public void DidDismiss(UIPresentationController presentationController)
+        {
+            ReplSceneDelegate.Instance?.SetActiveScreen(this);
+        }
+    }
+
+    public enum PresentationBehaviour
+    {
+        Present = 0,
+        New = 1,
+        Reuse = 2,
     }
 }
 

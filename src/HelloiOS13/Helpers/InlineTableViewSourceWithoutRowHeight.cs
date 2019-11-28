@@ -49,7 +49,7 @@ namespace ARKitMeetup.Helpers
         public Action<UIScrollView> _DeaccelerationEnded { get; set; }
         public Action<UIScrollView> _Scrolled { get; set; }
         public Action<UIScrollView> _ScrollAnimationEnded { get; set; }
-
+        
         public override void Scrolled(UIScrollView scrollView)
         {
             if (_Scrolled != null)
